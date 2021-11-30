@@ -15,7 +15,7 @@ class Game { // Visitor abstract base class
         void virtual visit(Human *human) = 0;
         void virtual visit(DefaultComputer *comp) = 0;
 
-        Game(unsigned int turnNum); // ctor
+        explicit Game(unsigned int turnNum); // ctor
         ~Game(); // dtor
 };
 
