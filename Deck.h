@@ -8,19 +8,19 @@
 class Player;
 
 class Deck {
-    class Card;
-
-    std::vector<std::unique_ptr<Card>> cards; // 52 cards
-    std::default_random_engine rng; // for shuffling
-
     class Card {
-        unsigned int value; // 1 to 13
+        int value; // 1 to 13
         char suite; // H, D, C, or S
         std::string name; // eg. AS or 7H or KD etc.
 
         public: 
             Card(int value, char suite, std::string name); // ctor
+            ~Card();
+            std::string getName(); // getter
     };
+
+    std::vector<std::unique_ptr<Card>> cards; // 52 cards
+    std::default_random_engine rng; // for shuffling
 
     public:
         void shuffle(); // shuffles cards in deck using rng
