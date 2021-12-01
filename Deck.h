@@ -6,19 +6,9 @@
 #include <random>
 
 class Player;
+class Card;
 
 class Deck {
-    class Card {
-        int value; // 1 to 13
-        char suite; // H, D, C, or S
-        std::string name; // eg. AS or 7H or KD etc.
-
-        public: 
-            Card(int value, char suite, std::string name); // ctor
-            ~Card();
-            std::string getName(); // getter
-    };
-
     std::vector<std::unique_ptr<Card>> cards; // 52 cards
     std::default_random_engine rng; // for shuffling
 
@@ -28,6 +18,20 @@ class Deck {
         void printDeck(); // prints cards in the cards vector
         Deck(std::default_random_engine rng); // ctor
         ~Deck(); // dtor
+};
+
+class Card {
+    int value; // 1 to 13
+    char suite; // H, D, C, or S
+    std::string name; // eg. AS or 7H or KD etc.
+
+    public: 
+        Card(int value, char suite, std::string name); // ctor
+        ~Card();
+        // Getters
+        int getVal();
+        char getSuite();
+        std::string getName();
 };
 
 
