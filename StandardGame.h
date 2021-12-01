@@ -9,8 +9,8 @@ class Card;
 
 class StandardGame : public Game {
     std::vector<std::vector<Card *>> piles;
-    void visit(Human *human) override;
-    void visit(DefaultComputer *comp) override;
+    char visit(Human *human) override;
+    char visit(DefaultComputer *comp) override;
 
     public:
         // returns true if game has ended
