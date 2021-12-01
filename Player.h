@@ -1,9 +1,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include <vector>
-
-class Game;
-class Card;
+#include "Deck.h"
+#include "Game.h"
 
 class Player { // Element abstract base class
     unsigned int score; // accumulated score for the game
@@ -15,10 +14,16 @@ class Player { // Element abstract base class
         
         // makeMove returns d for print deck, r for ragequit, and 0 otherwise
         char virtual makeMove(Game &game) = 0; // accept(visitor)
+        void printHand();
+        void printDiscarded();
+        int getSumDiscards();
         bool hasSpadeSeven(); // true if hand contains 7S
         bool handEmpty(); // true if hand.size() = 0
+        Card *getCard(std::string name);
+        void removeCard(std::string name);
+        void discardCard(std::string name);
         int getScore(); // getter
-        int setScore(); // setter
+        void setScore(unsigned int score); // setter
 
         explicit Player(unsigned int score); // ctor
         ~Player(); // dtor
