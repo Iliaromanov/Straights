@@ -12,8 +12,8 @@ class Game { // Visitor abstract base class
     public:
         void nextTurn(); // updates turnNum
         int getTurnNum(); // getter
-        void virtual visit(Human *human) = 0;
-        void virtual visit(DefaultComputer *comp) = 0;
+        char virtual visit(Human *human) = 0;
+        char virtual visit(DefaultComputer *comp) = 0;
 
         explicit Game(unsigned int turnNum); // ctor
         ~Game(); // dtor
