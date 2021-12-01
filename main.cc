@@ -32,19 +32,16 @@ int main( int argc, char * argv[] ) {
     // Create deck of cards
     Deck deck{rng};
 
+    // Create vector of players
+    vector<unique_ptr<Player>> players;
+    for (int i = 1; i < 5; ++i) {
+        cout << "Is Player" << i << " a human (h) or a computer (c)?" << endl;
+        char playerType;
+        cin >> playerType;
+        if (playerType == 'h') players.push_back(make_unique<Human>(0));
+        if (playerType == 'c') players.push_back(make_unique<DefaultComputer>(0));
+    }
 
-    deck.printDeck();
-
-
-    // // Create vector of players
-    // vector<unique_ptr<Player>> players;
-    // for (int i = 1; i < 5; ++i) {
-    //     cout << "Is Player" << i << "a human (h) or a computer (c)?" << endl;
-    //     char playerType;
-    //     cin >> playerType;
-    //     if (playerType == 'h') players.push_back(make_unique<Human>(0));
-    //     if (playerType == 'c') players.push_back(make_unique<DefaultComputer>(0));
-    // }
 
     // // Start the game
     // while (1) {
