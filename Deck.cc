@@ -44,19 +44,15 @@ void Deck::shuffle() {
 // deals 13 cards to each player
 void Deck::dealCards(Player *p1, Player *p2, Player *p3, Player *p4) {
     // clear hand and discarded vectors from prev round
-    p1->hand.clear();
-    p1->discarded.clear();
-    p2->hand.clear();
-    p2->discarded.clear();
-    p3->hand.clear();
-    p3->discarded.clear();
-    p4->hand.clear();
-    p4->discarded.clear();
-    // deal cards; 13 per player
-    for (int i = 0; i < 13; ++i) p1->hand.push_back(cards.at(i).get());
-    for (int i = 13; i < 26; ++i) p2->hand.push_back(cards.at(i).get());
-    for (int i = 26; i < 39; ++i) p3->hand.push_back(cards.at(i).get());
-    for (int i = 39; i < 52; ++i) p4->hand.push_back(cards.at(i).get());
+    p1->clearCards();
+    p2->clearCards();
+    p3->clearCards();
+    p4->clearCards();
+    // deal cards, 13 per player
+    for (int i = 0; i < 13; ++i) p1->addCard(cards.at(i).get());
+    for (int i = 13; i < 26; ++i) p2->addCard(cards.at(i).get());
+    for (int i = 26; i < 39; ++i) p3->addCard(cards.at(i).get());
+    for (int i = 39; i < 52; ++i) p4->addCard(cards.at(i).get());
 }
 
 // prints cards in the cards vector in 4 rows of 13
