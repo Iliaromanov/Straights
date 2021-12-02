@@ -43,54 +43,55 @@ int main( int argc, char * argv[] ) {
     }
 
 
-    // // Start the game
-    // while (1) {
-    //     deck.shuffle();
-    //     deck.dealCards(
-    //         players.at(0).get(), // Player1
-    //         players.at(1).get(), // Player2
-    //         players.at(2).get(), // Player3
-    //         players.at(3).get()  // Player4
-    //     );
-    //     // determine starting player and initilize a StandardGame round
-    //     unsigned int startingPlayer;
-    //     for (int i = 0; i < 4; ++i) {
-    //         if (players.at(i)->hasSpadeSeven()) {
-    //             startingPlayer = i;
-    //             break;
-    //         }
-    //     }
-    //     cout << "A new round begins. It's Player";
-    //     cout << startingPlayer << "'s turn to play" << endl;//could move this to StandardGame ctor, but then would have to turn off the ctor skipping stuff with a flag in makefile
-    //     StandardGame game_round{startingPlayer};
-    //     // The round continues until everybody has an empty hand
-    //     while(!(players.at(0)->handEmpty() && players.at(1)->handEmpty() && 
-    //             players.at(2)->handEmpty() && players.at(3)->handEmpty())) {
-    //         // While player hasn't discarded or played a card its still their turn
-    //         int turnNum = game_round.getTurnNum();
-    //         char moveResult = players.at(turnNum).get()->makeMove(game_round);
-    //         while(moveResult != '0') {
-    //             if (moveResult == 'd') { // print deck
-    //                 deck.printDeck();
-    //             } else { // ragequit
-    //                 cout << "Player" << turnNum + 1 << "ragequits.";
-    //                 cout << " A computer will now take over." << endl; // Move this to the visit(Human) method in StandardGame since it pretains to using CLI interface
-    //                 // replace human player with computer
-    //                 auto old_player = move(players.at(turnNum));
-    //                 players.at(turnNum) = make_unique<DefaultComputer>(old_player->getScore());
-    //                 // copy human players hand
-    //                 for (auto card : old_player->hand) {
-    //                     players.at(turnNum)->hand.push_back(card);
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     bool game_ended = game_round.endRound(
-    //         players.at(0).get(), // Player1
-    //         players.at(1).get(), // Player2
-    //         players.at(2).get(), // Player3
-    //         players.at(3).get()  // Player4
-    //     );
-    //     if (game_ended) break;
-    // }
+    // Start the game
+    while (1) {
+        deck.shuffle();
+        deck.dealCards(
+            players.at(0).get(), // Player1
+            players.at(1).get(), // Player2
+            players.at(2).get(), // Player3
+            players.at(3).get()  // Player4
+        );
+        // determine starting player and initilize a StandardGame round
+        unsigned int startingPlayer;
+        for (int i = 0; i < 4; ++i) {
+            if (players.at(i)->hasSpadeSeven()) {
+                startingPlayer = i;
+                break;
+            }
+        }
+        //could move this to StandardGame ctor, but then would have to turn off the ctor skipping stuff with a flag in makefile
+        StandardGame game_round{startingPlayer};
+        // The round continues until everybody has an empty hand
+        while(!(players.at(0)->handEmpty() && players.at(1)->handEmpty() && 
+                players.at(2)->handEmpty() && players.at(3)->handEmpty())) {
+            // While player hasn't discarded or played a card its still their turn
+            int turn_num = game_round.getTurnNum();
+            char move_result = players.at(turn_num).get()->makeMove(game_round);
+            while(move_result == 'd') {
+                deck.printDeck();
+                move_result = players.at(turn_num).get()->makeMove(game_round);
+            }
+            
+            if (move_result == 'q') {
+                // replace human player with computer
+                auto old_player = move(players.at(turn_num));
+                players[turn_num] = make_unique<DefaultComputer>(old_player->getScore());
+                // copy human players hand
+                for (auto card : old_player->getHand()) {
+                    players[turn_num]->addCard(card);
+                }
+                // let the computer player make a play
+                players.at(turn_num).get()->makeMove(game_round);
+            }
+            game_round.nextTurn();
+        }
+        bool game_ended = game_round.endRound(
+            players.at(0).get(), // Player1
+            players.at(1).get(), // Player2
+            players.at(2).get(), // Player3
+            players.at(3).get()  // Player4
+        );
+        if (game_ended) break;
+    }
 }
