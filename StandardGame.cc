@@ -23,7 +23,11 @@ void StandardGame::printCardsOnTable() {
     for (auto &pile : piles) {
         cout << pile.first;
         for (auto &card : pile.second) {
-            cout << " " <<  card->getName();
+            if (card->getVal() == 10) {
+                cout << " 10";
+            } else {
+                cout << " " <<  card->getName()[0];
+            }
         }
         cout << endl;
     }
@@ -88,17 +92,19 @@ void StandardGame::getLegalPlays(vector<Card *> &legal_plays, Player *player) {
         return;
     }
 
-    // Get edge cards of each suite pile
-    vector<Card *> edge_cards;/// <------------------check if this causes mem leak, shouldn't cus card is freed by unique_ptr, but if it does, thats gay
+    // Get edge cards of each suite pile and check if player has cards of +-1 value
     for (auto pile : piles) {
-        if (pile.second.size()) edge_cards.push_back(pile.second.at(0));
-        if (pile.second.size() > 1) edge_cards.push_back(pile.second.back());
-    }
+        if (pile.second.size()) { 
+            // check front of pile
+            Card *card = pile.second.at(0);
+            Card *legal_play = player->getCard(card->getVal()-1, card->getSuite());
+            if (legal_play) legal_plays.push_back(legal_play);
 
-    // Add cards that are both in player->hand and edge_cards to legal_plays
-    for (auto card : edge_cards) {
-        Card *legal_play = player->getCard(card->getName());/// <------------------check if this causes mem leak, shouldn't cus card is freed by unique_ptr, but if it does, thats gay
-        if (legal_play) legal_plays.push_back(legal_play);
+            // check back of pile
+            card = pile.second.back();
+            legal_play = player->getCard(card->getVal()+1, card->getSuite());
+            if (legal_play) legal_plays.push_back(legal_play);
+        }
     }
 
     // Add 7s to legal plays if they are in players hand
@@ -107,7 +113,10 @@ void StandardGame::getLegalPlays(vector<Card *> &legal_plays, Player *player) {
     if (player->getCard("7H")) legal_plays.push_back(player->getCard("7H"));
     // sort so DefaultComputer player picks correctly
     sort(legal_plays.begin(), legal_plays.end(), 
-        [](Card *c1, Card *c2) {return c1->getName() < c2->getName();}
+        [](Card *c1, Card *c2) {
+            return c1->getVal() < c2->getVal() || 
+                   c1->getVal() == c2->getVal() && c1->getSuite() < c2->getSuite();
+        }
     );
 
     if (!human_redo) { 
@@ -119,20 +128,23 @@ void StandardGame::getLegalPlays(vector<Card *> &legal_plays, Player *player) {
 
 // visit returns d for print deck, r for ragequit, and 0 otherwise
 char StandardGame::visit(DefaultComputer *comp) {
-    cout << "It's Player" << getTurnNum()+1 << "'s turn to play." << endl;
-    // print cards on table
-    printCardsOnTable();
-
-    // print players hand
-    printHand(comp);
+    if (!human_redo) {
+        cout << "---------------------------------------------------" << endl;
+        cout << "It's Player" << getTurnNum()+1 << "'s turn to play." << endl;
+        printCardsOnTable();
+        // print players hand
+        printHand(comp);
+    }
 
     // Get legal plays
     vector<Card *> legal_plays;                     /// <------------------check if this causes mem leak, shouldn't cus card is freed by unique_ptr, but if it does, thats gay
     getLegalPlays(legal_plays, comp);
 
+    human_redo = false;
+
     // Discard first card in hand if no legal plays available
     if (!legal_plays.size()) {
-        discardCard(comp, comp->hand.at(0));
+        discardCard(comp, comp->getHand().at(0));
     } else { // make the first legal_play
         playCard(comp, legal_plays.at(0));
     }
@@ -142,6 +154,7 @@ char StandardGame::visit(DefaultComputer *comp) {
 // visit returns d for print deck, r for ragequit, and 0 otherwise
 char StandardGame::visit(Human *human) {
     if (!human_redo) {
+        cout << "---------------------------------------------------" << endl;
         cout << "It's Player" << getTurnNum()+1 << "'s turn to play." << endl;
         printCardsOnTable();
         // print players hand
@@ -163,9 +176,10 @@ char StandardGame::visit(Human *human) {
             return 'd';
         }
         if (cmd == "ragequit") {
-            cout << "Player" << getTurnNum()+1 << "ragequits.";
+            cout << "Player" << getTurnNum()+1 << " ragequits.";
             cout << " A computer will now take over." << endl;
-            return 'r';
+            human_redo = true;
+            return 'q';
         }
         if (cmd == "play") {
             string card_name;
@@ -240,21 +254,19 @@ bool StandardGame::endRound(Player *p1, Player *p2, Player *p3, Player *p4) {
 
     // Check for end of game
     bool game_won = false;
-    if (p1->getScore() >= 80) {
-        cout << "Player1 wins!" << endl;
+    if (p1->getScore() >= 80 || p2->getScore() >= 80 ||
+        p3->getScore() >= 80 || p4->getScore() >= 80) {
         game_won = true;
-    }
-    if (p2->getScore() >= 80) {
-        cout << "Player2 wins!" << endl;
-        game_won = true;
-    }
-    if (p3->getScore() >= 80) {
-        cout << "Player3 wins!" << endl;
-        game_won = true;
-    }
-    if (p4->getScore() >= 80) {
-        cout << "Player4 wins!" << endl;
-        game_won = true;
+        int min_score = p1->getScore();
+
+        if (p2->getScore() < min_score) min_score = p2->getScore();
+        if (p3->getScore() < min_score) min_score = p3->getScore();
+        if (p4->getScore() < min_score) min_score = p4->getScore();
+
+        if (p1->getScore() == min_score) cout << "Player1 wins!" << endl;
+        if (p2->getScore() == min_score) cout << "Player2 wins!" << endl;
+        if (p3->getScore() == min_score) cout << "Player3 wins!" << endl;
+        if (p4->getScore() == min_score) cout << "Player4 wins!" << endl;
     }
     return game_won;
 }
