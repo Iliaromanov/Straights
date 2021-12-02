@@ -232,21 +232,21 @@ bool StandardGame::endRound(Player *p1, Player *p2, Player *p3, Player *p4) {
     cout << p1->getScore() << endl;
 
     cout << "Player2's discards:";
-    p1->printDiscarded();
+    p2->printDiscarded();
     cout << "Player2's score: " << p2->getScore();
     cout << " + " << p2->getSumDiscards() << " = ";
     p2->setScore(p2->getScore() + p2->getSumDiscards());
     cout << p2->getScore() << endl;
 
     cout << "Player3's discards:";
-    p1->printDiscarded();
+    p3->printDiscarded();
     cout << "Player3's score: " << p3->getScore();
     cout << " + " << p3->getSumDiscards() << " = ";
     p3->setScore(p3->getScore() + p3->getSumDiscards());
     cout << p3->getScore() << endl;
 
     cout << "Player4's discards:";
-    p1->printDiscarded();
+    p4->printDiscarded();
     cout << "Player4's score: " << p4->getScore();
     cout << " + " << p4->getSumDiscards() << " = ";
     p4->setScore(p4->getScore() + p4->getSumDiscards());
