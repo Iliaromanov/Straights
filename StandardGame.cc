@@ -23,11 +23,7 @@ void StandardGame::printCardsOnTable() {
     for (auto &pile : piles) {
         cout << pile.first;
         for (auto &card : pile.second) {
-            if (card->getVal() == 10) {
-                cout << " 10";
-            } else {
-                cout << " " <<  card->getName()[0];
-            }
+            cout << " " <<  card->getName()[0];
         }
         cout << endl;
     }
