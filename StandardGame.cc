@@ -110,8 +110,8 @@ void StandardGame::getLegalPlays(vector<Card *> &legal_plays, Player *player) {
     // sort so DefaultComputer player picks correctly
     sort(legal_plays.begin(), legal_plays.end(), 
         [](Card *c1, Card *c2) {
-            return c1->getVal() < c2->getVal() || 
-                   c1->getVal() == c2->getVal() && c1->getSuite() < c2->getSuite();
+            return (c1->getVal() < c2->getVal()) || 
+                   (c1->getVal() == c2->getVal() && c1->getSuite() < c2->getSuite());
         }
     );
 

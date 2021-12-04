@@ -62,8 +62,8 @@ void Player::addCard(Card *card) {
     hand.push_back(card);
     sort(hand.begin(), hand.end(),
         [](Card *c1, Card *c2) {
-            return c1->getVal() < c2->getVal() || 
-                   c1->getVal() == c2->getVal() && c1->getSuite() < c2->getSuite();
+            return (c1->getVal() < c2->getVal()) || 
+                   (c1->getVal() == c2->getVal() && c1->getSuite() < c2->getSuite());
         }
     );
 }
