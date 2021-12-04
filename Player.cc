@@ -6,7 +6,7 @@ using namespace std;
 Player::Player(unsigned int score) : score{score} {} // ctor
 Player::~Player() {} // dtor
 
-Card *Player::getCard(std::string name) { /// <-----check if returning Card * causes mem leak, shouldn't cus card is freed by unique_ptr, but if it does, thats gay
+Card *Player::getCard(std::string name) {
     for (auto card : hand) {
         if (card->getName() == name) return card;
     }

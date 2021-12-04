@@ -36,10 +36,10 @@ int main( int argc, char * argv[] ) {
     vector<unique_ptr<Player>> players;
     for (int i = 1; i < 5; ++i) {
         cout << "Is Player" << i << " a human (h) or a computer (c)?" << endl;
-        char playerType;
-        cin >> playerType;
-        if (playerType == 'h') players.push_back(make_unique<Human>(0));
-        if (playerType == 'c') players.push_back(make_unique<DefaultComputer>(0));
+        char player_type;
+        cin >> player_type;
+        if (player_type == 'h') players.push_back(make_unique<Human>(0));
+        if (player_type == 'c') players.push_back(make_unique<DefaultComputer>(0));
     }
 
 
@@ -60,7 +60,6 @@ int main( int argc, char * argv[] ) {
                 break;
             }
         }
-        //could move this to StandardGame ctor, but then would have to turn off the ctor skipping stuff with a flag in makefile
         StandardGame game_round{startingPlayer};
         // The round continues until everybody has an empty hand
         while(!(players.at(0)->handEmpty() && players.at(1)->handEmpty() && 
@@ -68,12 +67,11 @@ int main( int argc, char * argv[] ) {
             // While player hasn't discarded or played a card its still their turn
             int turn_num = game_round.getTurnNum();
             char move_result = players.at(turn_num).get()->makeMove(game_round);
-            while(move_result == 'd') {
+            while(move_result == 'd') { // human calls deck command
                 deck.printDeck();
                 move_result = players.at(turn_num).get()->makeMove(game_round);
             }
-            
-            if (move_result == 'q') {
+            if (move_result == 'q') { // human calls ragequit command
                 // replace human player with computer
                 auto old_player = move(players.at(turn_num));
                 players[turn_num] = make_unique<DefaultComputer>(old_player->getScore());

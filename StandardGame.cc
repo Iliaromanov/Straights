@@ -133,7 +133,7 @@ char StandardGame::visit(DefaultComputer *comp) {
     }
 
     // Get legal plays
-    vector<Card *> legal_plays;                     /// <------------------check if this causes mem leak, shouldn't cus card is freed by unique_ptr, but if it does, thats gay
+    vector<Card *> legal_plays;
     getLegalPlays(legal_plays, comp);
 
     human_redo = false;
@@ -158,7 +158,7 @@ char StandardGame::visit(Human *human) {
     }
 
     // Get legal plays
-    vector<Card *> legal_plays;                     /// <------------------check if this causes mem leak, shouldn't cus card is freed by unique_ptr, but if it does, thats gay
+    vector<Card *> legal_plays;
     getLegalPlays(legal_plays, human);
 
     // Read command from stdin

@@ -7,7 +7,7 @@ class DefaultComputer : public Player { // ConcreteElementB
         // makeMove returns d for print deck, r for ragequit, and 0 otherwise
         char makeMove(Game &game) override;
 
-        explicit DefaultComputer(unsigned int score); // : Player{score} {}
+        explicit DefaultComputer(unsigned int score); // ctor
 };
 
 #endif
