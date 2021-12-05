@@ -107,13 +107,6 @@ void StandardGame::getLegalPlays(vector<Card *> &legal_plays, Player *player) {
     if (player->getCard("7C")) legal_plays.push_back(player->getCard("7C"));
     if (player->getCard("7D")) legal_plays.push_back(player->getCard("7D"));
     if (player->getCard("7H")) legal_plays.push_back(player->getCard("7H"));
-    // sort so DefaultComputer player picks correctly
-    sort(legal_plays.begin(), legal_plays.end(), 
-        [](Card *c1, Card *c2) {
-            return (c1->getVal() < c2->getVal()) || 
-                   (c1->getVal() == c2->getVal() && c1->getSuite() < c2->getSuite());
-        }
-    );
 
     if (!human_redo) { 
         cout << "Legal plays:";

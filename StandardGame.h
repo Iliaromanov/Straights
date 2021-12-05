@@ -30,3 +30,12 @@ class StandardGame : public Game {
 };
 
 #endif
+
+
+/* way to sort cards in case want to make a smarter Computer player
+sort(legal_plays.begin(), legal_plays.end(), 
+        [](Card *c1, Card *c2) {
+            return (c1->getVal() < c2->getVal());
+        }
+    );
+*/
