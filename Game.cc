@@ -2,12 +2,16 @@
 using namespace std;
 
 
-Game::Game(unsigned int turnNum) : turnNum{turnNum} {} // ctor
+Game::Game(unsigned int turnNum) : turnNum{turnNum}, turnCount{0} {} // ctor
 Game::~Game() {} // dtor
 
 // updates turnNum
 void Game::nextTurn() {
+    ++turnCount;
     ++turnNum;
     if (turnNum == 4) turnNum = 0;
 }
-int Game::getTurnNum(){ return turnNum; } // getter
+
+// getters
+int Game::getTurnNum(){ return turnNum; }
+int Game::getTurnCount(){ return turnCount; } 
