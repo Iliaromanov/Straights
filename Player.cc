@@ -67,5 +67,6 @@ void Player::clearCards() {
 }
 bool Player::handEmpty() { return hand.size() == 0; }
 vector<Card *> Player::getHand() { return hand; } // very ugly getter
+vector<Card *> Player::getDiscarded() { return discarded; }
 int Player::getScore() { return score; } // getter
 void Player::setScore(unsigned int score) { this->score = score; } // setter

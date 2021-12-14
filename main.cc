@@ -79,6 +79,11 @@ int main( int argc, char * argv[] ) {
                 for (auto card : old_player->getHand()) {
                     players[turn_num]->addCard(card);
                 }
+                // copy human players discarded
+                for (auto card : old_player->getDiscarded()) {
+                    players[turn_num]->addCard(card);
+                    players[turn_num]->discardCard(card->getName());
+                }
                 // let the computer player make a play
                 players.at(turn_num).get()->makeMove(game_round);
             }

@@ -25,6 +25,7 @@ class Player { // Element abstract base class
         void removeCard(std::string name);
         void discardCard(std::string name);
         std::vector<Card *> getHand(); // why?
+        std::vector<Card *> getDiscarded(); // why?
         int getScore(); // getter
         void setScore(unsigned int score); // setter
 
