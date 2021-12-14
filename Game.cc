@@ -2,7 +2,7 @@
 using namespace std;
 
 
-Game::Game(unsigned int turnNum) : turnNum{turnNum}, turnCount{0} {} // ctor
+Game::Game(unsigned int turnNum) : turnNum{turnNum}, turnCount{1} {} // ctor
 Game::~Game() {} // dtor
 
 // updates turnNum

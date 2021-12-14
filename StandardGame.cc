@@ -41,7 +41,7 @@ void StandardGame::playCard(Player *player, Card *card) {
 
     // Place the card into its corresponding pile
     if (card->getSuite() == 'C') {
-        // if its a 7 or the largest card just push it to the end pile
+        // if its a 7 or the largest card push it to the end pile
         if (card->getVal() == 7 || card->getVal() > piles["Clubs:"].back()->getVal()) {
             piles["Clubs:"].push_back(card);
         // otherwise insert it to the start of the pile
@@ -118,7 +118,7 @@ void StandardGame::getLegalPlays(vector<Card *> &legal_plays, Player *player) {
 // visit returns d for print deck, r for ragequit, and 0 otherwise
 char StandardGame::visit(DefaultComputer *comp) {
     if (!human_redo) {
-        cout << "---------------------------------------------------" << endl;
+        cout << "-------------------------------------------Turn " << getTurnCount() << endl;
         cout << "It's Player" << getTurnNum()+1 << "'s turn to play." << endl;
         printCardsOnTable();
         // print players hand
@@ -143,7 +143,7 @@ char StandardGame::visit(DefaultComputer *comp) {
 // visit returns d for print deck, r for ragequit, and 0 otherwise
 char StandardGame::visit(Human *human) {
     if (!human_redo) {
-        cout << "---------------------------------------------------" << endl;
+        cout << "-------------------------------------------Turn " << getTurnCount() << endl;
         cout << "It's Player" << getTurnNum()+1 << "'s turn to play." << endl;
         printCardsOnTable();
         // print players hand
@@ -213,6 +213,7 @@ char StandardGame::visit(Human *human) {
 
 // returns true if game has ended
 bool StandardGame::endRound(Player *p1, Player *p2, Player *p3, Player *p4) {
+    cout << "===================END OF ROUND===================" << endl;
     cout << "Player1's discards:";
     p1->printDiscarded();
     cout << "Player1's score: " << p1->getScore();
@@ -257,5 +258,6 @@ bool StandardGame::endRound(Player *p1, Player *p2, Player *p3, Player *p4) {
         if (p3->getScore() == min_score) cout << "Player3 wins!" << endl;
         if (p4->getScore() == min_score) cout << "Player4 wins!" << endl;
     }
+    cout << "==================================================" << endl;
     return game_won;
 }
