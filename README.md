@@ -7,3 +7,4 @@ tie, then all players with that score win.
 
 # UML Diagram
 <img src="uml.png" width="700" height="700"/>
+
